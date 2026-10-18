@@ -1,0 +1,854 @@
+<!DOCTYPE html>
+<html lang="en" data-bs-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>DevPrime | Digital Software & Web Development Agency</title>
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Arvo:ital,wght@0,400;0,700;1,400&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+  <!-- Bootstrap 5 CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+
+  <!-- FontAwesome Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+  <style>
+    /* ==========================================================
+       THEME VARIABLES & CORE STYLES
+       ========================================================== */
+    :root {
+      --bg-main: #0b0b0c;
+      --bg-card: #141416;
+      --bg-card-border: rgba(212, 163, 115, 0.15);
+      --text-main: #f4f4f6;
+      --text-muted: #a0a0ab;
+      --primary-accent: #c58b5e;
+      --primary-accent-hover: #e0a374;
+      --primary-accent-glow: rgba(197, 139, 94, 0.25);
+      --glass-bg: rgba(11, 11, 12, 0.75);
+      --glass-border: rgba(255, 255, 255, 0.08);
+      --font-heading: 'Arvo', serif;
+      --font-body: 'Poppins', sans-serif;
+    }
+
+    [data-bs-theme="light"] {
+      --bg-main: #f8f9fa;
+      --bg-card: #ffffff;
+      --bg-card-border: rgba(197, 139, 94, 0.2);
+      --text-main: #121214;
+      --text-muted: #5a5a66;
+      --primary-accent: #a66e43;
+      --primary-accent-hover: #8c5b35;
+      --primary-accent-glow: rgba(166, 110, 67, 0.2);
+      --glass-bg: rgba(248, 249, 250, 0.82);
+      --glass-border: rgba(0, 0, 0, 0.08);
+    }
+
+    body {
+      background-color: var(--bg-main);
+      color: var(--text-main);
+      font-family: var(--font-body);
+      overflow-x: hidden;
+      transition: background-color 0.4s ease, color 0.4s ease;
+    }
+
+    h1, h2, h3, h4, h5, h6, .font-heading {
+      font-family: var(--font-heading);
+    }
+
+    .text-accent {
+      color: var(--primary-accent) !important;
+    }
+
+    .btn-accent {
+      background-color: var(--primary-accent);
+      color: #ffffff;
+      border: 1px solid var(--primary-accent);
+      font-weight: 600;
+      padding: 0.75rem 1.8rem;
+      border-radius: 50px;
+      transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+      box-shadow: 0 4px 15px var(--primary-accent-glow);
+    }
+
+    .btn-accent:hover {
+      background-color: var(--primary-accent-hover);
+      border-color: var(--primary-accent-hover);
+      color: #ffffff;
+      transform: translateY(-2px);
+      box-shadow: 0 8px 25px var(--primary-accent-glow);
+    }
+
+    .btn-outline-accent {
+      border: 1px solid var(--primary-accent);
+      color: var(--text-main);
+      font-weight: 500;
+      padding: 0.75rem 1.8rem;
+      border-radius: 50px;
+      transition: all 0.3s ease;
+    }
+
+    .btn-outline-accent:hover {
+      background-color: var(--primary-accent);
+      color: #ffffff;
+    }
+
+    /* ==========================================================
+       NAVIGATION BAR (Glassmorphism)
+       ========================================================== */
+    .navbar-glass {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 1000;
+      background: var(--glass-bg);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border-bottom: 1px solid var(--glass-border);
+      padding: 1rem 0;
+      transition: all 0.3s ease;
+    }
+
+    .navbar-brand {
+      font-family: var(--font-heading);
+      font-weight: 700;
+      font-size: 1.6rem;
+      letter-spacing: -0.5px;
+      color: var(--text-main);
+    }
+
+    .nav-link {
+      color: var(--text-main);
+      font-weight: 500;
+      margin: 0 0.5rem;
+      position: relative;
+      transition: color 0.3s ease;
+    }
+
+    .nav-link:hover, .nav-link.active {
+      color: var(--primary-accent);
+    }
+
+    .nav-link::after {
+      content: '';
+      position: absolute;
+      width: 0%;
+      height: 2px;
+      bottom: -4px;
+      left: 0;
+      background-color: var(--primary-accent);
+      transition: width 0.3s ease;
+    }
+
+    .nav-link:hover::after {
+      width: 100%;
+    }
+
+    /* Theme Switcher Toggle */
+    .theme-toggle-btn {
+      background: transparent;
+      border: 1px solid var(--glass-border);
+      color: var(--text-main);
+      width: 42px;
+      height: 42px;
+      border-radius: 50%;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    .theme-toggle-btn:hover {
+      border-color: var(--primary-accent);
+      color: var(--primary-accent);
+    }
+
+    /* ==========================================================
+       FLOATING SOCIAL DOCK (LEFT SIDE)
+       ========================================================== */
+    .social-dock {
+      position: fixed;
+      left: 20px;
+      top: 50%;
+      transform: translateY(-50%);
+      z-index: 999;
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
+      background: var(--glass-bg);
+      backdrop-filter: blur(12px);
+      padding: 12px 8px;
+      border-radius: 30px;
+      border: 1px solid var(--glass-border);
+    }
+
+    .social-dock a {
+      color: var(--text-main);
+      width: 38px;
+      height: 38px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-decoration: none;
+      transition: all 0.3s ease;
+      font-size: 1.1rem;
+    }
+
+    .social-dock a:hover {
+      background-color: var(--primary-accent);
+      color: #ffffff;
+      transform: scale(1.15);
+    }
+
+    @media (max-width: 768px) {
+      .social-dock {
+        display: none; /* Hide on small mobile screens to save space */
+      }
+    }
+
+    /* ==========================================================
+       HERO SECTION
+       ========================================================== */
+    .hero-section {
+      min-height: 100vh;
+      padding-top: 140px;
+      padding-bottom: 80px;
+      display: flex;
+      align-items: center;
+      position: relative;
+      background: radial-gradient(circle at 80% 20%, var(--primary-accent-glow) 0%, transparent 40%);
+    }
+
+    .hero-title {
+      font-size: clamp(2.5rem, 5vw, 4.5rem);
+      font-weight: 700;
+      line-height: 1.15;
+      margin-bottom: 1.5rem;
+    }
+
+    .hero-subtitle {
+      color: var(--text-muted);
+      font-size: 1.2rem;
+      max-width: 600px;
+      margin-bottom: 2.5rem;
+    }
+
+    .hero-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 6px 16px;
+      background: rgba(197, 139, 94, 0.1);
+      border: 1px solid var(--bg-card-border);
+      border-radius: 30px;
+      color: var(--primary-accent);
+      font-size: 0.875rem;
+      font-weight: 600;
+      margin-bottom: 1.5rem;
+    }
+
+    /* ==========================================================
+       ABOUT SECTION
+       ========================================================== */
+    .about-card {
+      background: var(--bg-card);
+      border: 1px solid var(--bg-card-border);
+      border-radius: 20px;
+      padding: 3rem;
+      position: relative;
+    }
+
+    /* ==========================================================
+       SERVICES SECTION
+       ========================================================== */
+    .service-card {
+      background: var(--bg-card);
+      border: 1px solid var(--glass-border);
+      border-radius: 16px;
+      padding: 2.5rem 2rem;
+      height: 100%;
+      transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .service-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 3px;
+      background: linear-gradient(90deg, transparent, var(--primary-accent), transparent);
+      opacity: 0;
+      transition: opacity 0.4s ease;
+    }
+
+    .service-card:hover {
+      transform: translateY(-8px);
+      border-color: var(--primary-accent);
+      box-shadow: 0 15px 35px rgba(0,0,0,0.3);
+    }
+
+    .service-card:hover::before {
+      opacity: 1;
+    }
+
+    .service-icon {
+      width: 60px;
+      height: 60px;
+      border-radius: 12px;
+      background: rgba(197, 139, 94, 0.1);
+      color: var(--primary-accent);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.6rem;
+      margin-bottom: 1.5rem;
+    }
+
+    /* ==========================================================
+       STATS SECTION
+       ========================================================== */
+    .stats-card {
+      background: var(--bg-card);
+      border: 1px solid var(--bg-card-border);
+      border-radius: 16px;
+      padding: 2.5rem 1.5rem;
+      text-align: center;
+    }
+
+    .stat-number {
+      font-family: var(--font-heading);
+      font-size: 3rem;
+      font-weight: 700;
+      color: var(--primary-accent);
+      line-height: 1;
+      margin-bottom: 0.5rem;
+    }
+
+    /* ==========================================================
+       GSAP BRAND DIVIDER (Watermark)
+       ========================================================== */
+    .brand-watermark-section {
+      padding: 80px 0;
+      overflow: hidden;
+      white-space: nowrap;
+      user-select: none;
+    }
+
+    .watermark-text {
+      font-family: var(--font-heading);
+      font-size: clamp(4rem, 15vw, 12rem);
+      font-weight: 700;
+      letter-spacing: 12px;
+      color: transparent;
+      -webkit-text-stroke: 1px var(--primary-accent);
+      opacity: 0.25;
+      text-transform: uppercase;
+      line-height: 1;
+      display: inline-block;
+    }
+
+    /* ==========================================================
+       PROJECTS / PORTFOLIO SECTION
+       ========================================================== */
+    .project-card {
+      border-radius: 16px;
+      overflow: hidden;
+      background: var(--bg-card);
+      border: 1px solid var(--glass-border);
+      position: relative;
+    }
+
+    .project-img-wrapper {
+      position: relative;
+      overflow: hidden;
+      aspect-ratio: 16 / 10;
+    }
+
+    .project-img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 0.6s ease;
+    }
+
+    .project-card:hover .project-img {
+      transform: scale(1.08);
+    }
+
+    .project-info {
+      padding: 1.8rem;
+    }
+
+    /* ==========================================================
+       CONTACT SECTION & FOOTER
+       ========================================================== */
+    .form-control, .form-select {
+      background-color: var(--bg-card);
+      border: 1px solid var(--glass-border);
+      color: var(--text-main);
+      padding: 0.8rem 1.2rem;
+      border-radius: 10px;
+    }
+
+    .form-control:focus, .form-select:focus {
+      background-color: var(--bg-card);
+      border-color: var(--primary-accent);
+      color: var(--text-main);
+      box-shadow: 0 0 0 0.25rem var(--primary-accent-glow);
+    }
+
+    footer {
+      border-top: 1px solid var(--glass-border);
+      background-color: var(--bg-main);
+    }
+  </style>
+</head>
+<body>
+
+  <!-- FLOATING SOCIAL MEDIA DOCK -->
+  <aside class="social-dock" aria-label="Social links">
+    <a href="#" title="Facebook"><i class="fab fa-facebook-f"></i></a>
+    <a href="#" title="Instagram"><i class="fab fa-instagram"></i></a>
+    <a href="https://wa.me/" title="WhatsApp" target="_blank"><i class="fab fa-whatsapp"></i></a>
+  </aside>
+
+  <!-- NAVIGATION BAR -->
+  <nav class="navbar navbar-expand-lg navbar-glass" id="mainNavbar">
+    <div class="container">
+      <a class="navbar-brand d-flex align-items-center gap-2" href="#">
+        <i class="fa-solid fa-cube text-accent"></i> DevPrime
+      </a>
+
+      <div class="d-flex align-items-center gap-2 order-lg-3">
+        <!-- Theme Switcher Button -->
+        <button class="theme-toggle-btn" id="themeToggle" aria-label="Toggle Theme">
+          <i class="fa-solid fa-moon" id="themeIcon"></i>
+        </button>
+        <a href="#contact" class="btn btn-accent btn-sm d-none d-sm-inline-block">Get Started</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarContent">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+      </div>
+
+      <div class="collapse navbar-collapse order-lg-2" id="navbarContent">
+        <ul class="navbar-nav mx-auto mb-2 mb-lg-0">
+          <li class="nav-item"><a class="nav-link active" href="#home">Home</a></li>
+          <li class="nav-item"><a class="nav-link" href="#about">About</a></li>
+          <li class="nav-item"><a class="nav-link" href="#services">Services</a></li>
+          <li class="nav-item"><a class="nav-link" href="#projects">Projects</a></li>
+          <li class="nav-item"><a class="nav-link" href="#contact">Contact</a></li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <!-- HERO SECTION -->
+  <section id="home" class="hero-section">
+    <div class="container">
+      <div class="row align-items-center gy-5">
+        <div class="col-lg-7">
+          <div class="hero-badge gsap-hero-el">
+            <i class="fa-solid fa-sparkles"></i> High-End Digital Engineering
+          </div>
+          <h1 class="hero-title gsap-hero-el">
+            Architecting <span class="text-accent">Premium</span> Digital Experiences
+          </h1>
+          <p class="hero-subtitle gsap-hero-el">
+            DevPrime turns complex ideas into high-converting web applications, bespoke web designs, and powerful custom software tailored for market leaders.
+          </p>
+          <div class="d-flex flex-wrap gap-3 gsap-hero-el">
+            <a href="#projects" class="btn btn-accent">Explore Works <i class="fa-solid fa-arrow-right ms-2"></i></a>
+            <a href="#contact" class="btn btn-outline-accent">Schedule Consultation</a>
+          </div>
+        </div>
+        <div class="col-lg-5 text-center">
+          <div class="position-relative d-inline-block gsap-hero-img">
+            <div style="width: 100%; max-width: 420px; aspect-ratio: 1/1; border-radius: 30px; background: linear-gradient(135deg, var(--bg-card), rgba(197, 139, 94, 0.2)); border: 1px solid var(--bg-card-border); display: flex; align-items: center; justify-content: center; box-shadow: 0 20px 50px rgba(0,0,0,0.5);">
+              <i class="fa-solid fa-code-merge text-accent" style="font-size: 6rem;"></i>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ABOUT SECTION -->
+  <section id="about" class="py-5">
+    <div class="container py-4">
+      <div class="about-card gsap-reveal">
+        <div class="row align-items-center gy-4">
+          <div class="col-lg-6">
+            <span class="text-accent fw-semibold text-uppercase tracking-wider">About DevPrime</span>
+            <h2 class="mt-2 mb-4 fs-1">Where Precision Engineering Meets Luxury Design</h2>
+            <p class="text-muted">
+              At DevPrime, we don't build standard templates. We build custom-crafted web architectures, seamless digital ecosystems, and impactful software solutions that command authority in your industry.
+            </p>
+            <p class="text-muted mb-4">
+              Our multidisciplinary team combines elite UI/UX aesthetics with modern tech stacks, ensuring speed, security, and exceptional conversion rates.
+            </p>
+            <div class="row g-3">
+              <div class="col-6">
+                <div class="d-flex align-items-center gap-2">
+                  <i class="fa-solid fa-circle-check text-accent"></i>
+                  <span class="fw-medium">Custom Solutions</span>
+                </div>
+              </div>
+              <div class="col-6">
+                <div class="d-flex align-items-center gap-2">
+                  <i class="fa-solid fa-circle-check text-accent"></i>
+                  <span class="fw-medium">Scalable Architecture</span>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-lg-6">
+            <div class="p-4 rounded-4" style="background: var(--bg-main); border: 1px solid var(--glass-border);">
+              <h4 class="mb-3">Our Core Philosophy</h4>
+              <p class="text-muted small mb-3">
+                "Digital products should feel effortless to the user and invincible under the hood."
+              </p>
+              <hr class="my-3" style="border-color: var(--glass-border);">
+              <div class="d-flex align-items-center justify-content-between">
+                <div>
+                  <h6 class="mb-0">Technical Excellence</h6>
+                  <small class="text-muted">Zero Compromises</small>
+                </div>
+                <span class="badge bg-outline-accent text-accent border border-warning">100% Bespoke</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SERVICES SECTION -->
+  <section id="services" class="py-5">
+    <div class="container py-4">
+      <div class="text-center max-w-xl mx-auto mb-5 gsap-reveal">
+        <span class="text-accent fw-semibold text-uppercase">What We Excel At</span>
+        <h2 class="fs-1 mt-2">Tailored Digital Capabilities</h2>
+      </div>
+
+      <div class="row g-4">
+        <!-- Service 1 -->
+        <div class="col-md-6 col-lg-4 gsap-reveal">
+          <div class="service-card">
+            <div class="service-icon"><i class="fa-solid fa-pen-nib"></i></div>
+            <h4>UI/UX Design</h4>
+            <p class="text-muted mb-0">Intuitive user journeys, luxury micro-interactions, and visual prototypes that captivate users immediately.</p>
+          </div>
+        </div>
+
+        <!-- Service 2 -->
+        <div class="col-md-6 col-lg-4 gsap-reveal">
+          <div class="service-card">
+            <div class="service-icon"><i class="fa-solid fa-laptop-code"></i></div>
+            <h4>Website & Landing Pages</h4>
+            <p class="text-muted mb-0">Ultra-fast, mobile-optimized, conversion-focused websites engineered with modern frameworks.</p>
+          </div>
+        </div>
+
+        <!-- Service 3 -->
+        <div class="col-md-6 col-lg-4 gsap-reveal">
+          <div class="service-card">
+            <div class="service-icon"><i class="fa-solid fa-cart-shopping"></i></div>
+            <h4>E-Commerce Solutions</h4>
+            <p class="text-muted mb-0">High-performance digital stores designed to scale revenue and deliver frictionless checkout experiences.</p>
+          </div>
+        </div>
+
+        <!-- Service 4 -->
+        <div class="col-md-6 col-lg-4 gsap-reveal">
+          <div class="service-card">
+            <div class="service-icon"><i class="fa-solid fa-layer-group"></i></div>
+            <h4>Business Web Apps</h4>
+            <p class="text-muted mb-0">Custom web applications built to streamline complex enterprise workflows and operational demands.</p>
+          </div>
+        </div>
+
+        <!-- Service 5 -->
+        <div class="col-md-6 col-lg-4 gsap-reveal">
+          <div class="service-card">
+            <div class="service-icon"><i class="fa-solid fa-clapperboard"></i></div>
+            <h4>Video Ads & Graphics</h4>
+            <p class="text-muted mb-0">High-impact promo videos, social ad assets, and graphic design that strengthen your brand identity.</p>
+          </div>
+        </div>
+
+        <!-- Service 6 -->
+        <div class="col-md-6 col-lg-4 gsap-reveal">
+          <div class="service-card">
+            <div class="service-icon"><i class="fa-solid fa-boxes-stacked"></i></div>
+            <h4>Inventory & POS Systems</h4>
+            <p class="text-muted mb-0">Robust inventory management platforms and Point of Sale integrations for retail & enterprise clients.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- STATS SECTION -->
+  <section class="py-5">
+    <div class="container py-4">
+      <div class="row g-4">
+        <div class="col-6 col-lg-3 gsap-reveal">
+          <div class="stats-card">
+            <div class="stat-number" data-target="150">0</div>
+            <p class="text-muted mb-0 fw-medium">Projects Delivered</p>
+          </div>
+        </div>
+        <div class="col-6 col-lg-3 gsap-reveal">
+          <div class="stats-card">
+            <div class="stat-number" data-target="98">0</div>
+            <p class="text-muted mb-0 fw-medium">Client Satisfaction %</p>
+          </div>
+        </div>
+        <div class="col-6 col-lg-3 gsap-reveal">
+          <div class="stats-card">
+            <div class="stat-number" data-target="45">0</div>
+            <p class="text-muted mb-0 fw-medium">% Avg. Growth Boost</p>
+          </div>
+        </div>
+        <div class="col-6 col-lg-3 gsap-reveal">
+          <div class="stats-card">
+            <div class="stat-number" data-target="12">0</div>
+            <p class="text-muted mb-0 fw-medium">Global Awards</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- GSAP BRAND WATERMARK DIVIDER -->
+  <div class="brand-watermark-section">
+    <div class="watermark-text" id="brandWatermark">
+      DEVPRIME &bull; DEVPRIME &bull; DEVPRIME &bull;
+    </div>
+  </div>
+
+  <!-- PROJECTS / PORTFOLIO SECTION -->
+  <section id="projects" class="py-5">
+    <div class="container py-4">
+      <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-end mb-5 gsap-reveal">
+        <div>
+          <span class="text-accent fw-semibold text-uppercase">Featured Showcase</span>
+          <h2 class="fs-1 mt-2 mb-0">Selected Client Works</h2>
+        </div>
+        <a href="#contact" class="btn btn-outline-accent mt-3 mt-md-0">Start a Project</a>
+      </div>
+
+      <div class="row g-4">
+        <!-- Project Item 1 -->
+        <div class="col-md-6 gsap-reveal">
+          <div class="project-card">
+            <div class="project-img-wrapper">
+              <img src="https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&w=800&q=80" alt="Apex Roofing & Solar" class="project-img">
+            </div>
+            <div class="project-info">
+              <span class="badge bg-warning text-dark mb-2">Web App & UI Design</span>
+              <h4>Apex Commercial Portal</h4>
+              <p class="text-muted small">Multi-page corporate website & solar calculator engine with custom lead generation funnel.</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Project Item 2 -->
+        <div class="col-md-6 gsap-reveal">
+          <div class="project-card">
+            <div class="project-img-wrapper">
+              <img src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&w=800&q=80" alt="E-Commerce POS" class="project-img">
+            </div>
+            <div class="project-info">
+              <span class="badge bg-warning text-dark mb-2">Inventory & POS</span>
+              <h4>Nexus Enterprise POS</h4>
+              <p class="text-muted small">Cloud-connected inventory platform providing real-time store analytics and sales reporting.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CONTACT SECTION -->
+  <section id="contact" class="py-5">
+    <div class="container py-4">
+      <div class="row justify-content-center">
+        <div class="col-lg-8 gsap-reveal">
+          <div class="about-card">
+            <div class="text-center mb-4">
+              <span class="text-accent fw-semibold text-uppercase">Initiate Consultation</span>
+              <h2 class="fs-1 mt-2">Let’s Build Something Iconic</h2>
+            </div>
+
+            <!-- Firebase Integrated Structure Form -->
+            <form id="contactForm">
+              <div class="row g-3">
+                <div class="col-md-6">
+                  <label for="userName" class="form-label small fw-medium">Your Name</label>
+                  <input type="text" class="form-control" id="userName" placeholder="e.g. Syeda Zainab" required>
+                </div>
+                <div class="col-md-6">
+                  <label for="userEmail" class="form-label small fw-medium">Email Address</label>
+                  <input type="email" class="form-control" id="userEmail" placeholder="name@domain.com" required>
+                </div>
+                <div class="col-12">
+                  <label for="serviceNeeded" class="form-label small fw-medium">Service Needed</label>
+                  <select class="form-select" id="serviceNeeded" required>
+                    <option value="" selected disabled>Select primary service...</option>
+                    <option value="uiux">UI/UX Design</option>
+                    <option value="website">Website Design & Landing Pages</option>
+                    <option value="ecommerce">E-Commerce Solution</option>
+                    <option value="webapp">Business Web Application</option>
+                    <option value="video_graphics">Video Ads & Graphic Design</option>
+                    <option value="pos_inventory">Inventory Management & POS</option>
+                  </select>
+                </div>
+                <div class="col-12">
+                  <label for="userMessage" class="form-label small fw-medium">Project Brief</label>
+                  <textarea class="form-control" id="userMessage" rows="4" placeholder="Tell us about your project goals and timeline..." required></textarea>
+                </div>
+                <div class="col-12 text-center mt-4">
+                  <button type="submit" class="btn btn-accent w-100 py-3">Send Inquiry</button>
+                </div>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer class="py-4">
+    <div class="container text-center text-md-between d-flex flex-column flex-md-row align-items-center justify-content-between gap-3">
+      <div class="d-flex align-items-center gap-2">
+        <i class="fa-solid fa-cube text-accent"></i>
+        <span class="fw-bold font-heading">DevPrime Agency</span>
+      </div>
+      <p class="text-muted small mb-0">&copy; 2026 DevPrime. All Rights Reserved.</p>
+      <div class="d-flex gap-3 text-muted small">
+        <a href="#" class="text-reset text-decoration-none">Privacy Policy</a>
+        <a href="#" class="text-reset text-decoration-none">Terms of Service</a>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Bootstrap 5 JS Bundle -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+
+  <!-- GSAP & ScrollTrigger -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+
+  <script>
+    // Register GSAP ScrollTrigger
+    gsap.registerPlugin(ScrollTrigger);
+
+    // Dark/Light Theme Switcher Toggle Logic
+    const themeToggleBtn = document.getElementById('themeToggle');
+    const themeIcon = document.getElementById('themeIcon');
+    const htmlTag = document.documentElement;
+
+    themeToggleBtn.addEventListener('click', () => {
+      const currentTheme = htmlTag.getAttribute('data-bs-theme');
+      const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+      htmlTag.setAttribute('data-bs-theme', newTheme);
+
+      if (newTheme === 'light') {
+        themeIcon.classList.replace('fa-moon', 'fa-sun');
+      } else {
+        themeIcon.classList.replace('fa-sun', 'fa-moon');
+      }
+    });
+
+    // GSAP Hero Animations
+    gsap.from('.gsap-hero-el', {
+      duration: 1,
+      y: 40,
+      opacity: 0,
+      stagger: 0.2,
+      ease: 'power3.out',
+      delay: 0.2
+    });
+
+    gsap.from('.gsap-hero-img', {
+      duration: 1.2,
+      scale: 0.85,
+      opacity: 0,
+      ease: 'back.out(1.7)',
+      delay: 0.5
+    });
+
+    // GSAP ScrollReveal for Sections
+    gsap.utils.toArray('.gsap-reveal').forEach((el) => {
+      gsap.from(el, {
+        scrollTrigger: {
+          trigger: el,
+          start: 'top 85%',
+          toggleActions: 'play none none reverse'
+        },
+        duration: 0.8,
+        y: 35,
+        opacity: 0,
+        ease: 'power2.out'
+      });
+    });
+
+    // Dynamic Numbers Counter Animation
+    const statNumbers = document.querySelectorAll('.stat-number');
+    statNumbers.forEach(stat => {
+      const target = +stat.getAttribute('data-target');
+      gsap.to(stat, {
+        scrollTrigger: {
+          trigger: stat,
+          start: 'top 85%'
+        },
+        innerText: target,
+        duration: 2,
+        snap: { innerText: 1 },
+        ease: 'power1.out'
+      });
+    });
+
+    // Watermark Horizontal Scroll Effect
+    gsap.to('#brandWatermark', {
+      scrollTrigger: {
+        trigger: '.brand-watermark-section',
+        start: 'top bottom',
+        end: 'bottom top',
+        scrub: 1
+      },
+      xPercent: -15,
+      ease: 'none'
+    });
+
+    // Firebase Contact Form Handler (Structure Setup)
+    document.getElementById('contactForm').addEventListener('submit', function(e) {
+      e.preventDefault();
+      
+      const formData = {
+        name: document.getElementById('userName').value,
+        email: document.getElementById('userEmail').value,
+        service: document.getElementById('serviceNeeded').value,
+        message: document.getElementById('userMessage').value,
+        timestamp: new Date().toISOString()
+      };
+
+      console.log('Sending submission payload to Firebase DB:', formData);
+      alert('Thank you! Your inquiry has been sent to DevPrime.');
+      this.reset();
+    });
+  </script>
+</body>
+</html>
